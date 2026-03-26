@@ -29,6 +29,13 @@ public class DefinitionCreator {
         List<Token> tokens = BaseForm.findTokens("昨日は雨が降っていたので、私は傘を持って学校に行きましたが、友達は忘れてしまいました。");
         List<String> definitions = findMatches(tokens, dictionary.keySet());
         System.out.println(definitions);
+        for (String definition : definitions) {
+            List<Entry> entries = dictionary.get(definition);
+            for (Entry entry : entries) {
+                System.out.println(entry);
+                System.out.println("");
+            }
+        }
     }
 
     static Map<String, List<Entry>> createDictionary() throws IOException {
@@ -56,17 +63,17 @@ public class DefinitionCreator {
         while (index < tokens.size()) {
             Match match = getMatch(tokens, index, window);
             if (dictionary.contains(match.baseSequence)) {
-                definitions.add(match.baseSequence);
+                if (match.isWorthy) definitions.add(match.baseSequence);
                 index = getNextIndex(tokens, match);
                 window = tokens.size() - index;
             } else if (dictionary.contains(match.surfaceSequence)) {
-                definitions.add(match.surfaceSequence);
+                if (match.isWorthy) definitions.add(match.surfaceSequence);
                 index = getNextIndex(tokens, match);
                 window = tokens.size() - index;
             } else {
                 window--;
             }
-            if(window <= 0) {
+            if (window <= 0) {
                 System.out.println("Bad Token: " + tokens.get(index).surface);
                 index++;
                 window = tokens.size() - index;
@@ -79,10 +86,10 @@ public class DefinitionCreator {
     static int getNextIndex(List<Token> tokens, Match match) {
         int index = match.endIndex;
         boolean finding = true;
-        while(finding && index < tokens.size()) {
+        while (finding && index < tokens.size()) {
             index++;
             Token nextToken = tokens.get(index);
-            if(!nextToken.isAuxiliary() && !nextToken.isTeForm())
+            if (!nextToken.isAuxiliary() && !nextToken.isTeForm())
                 finding = false;
         }
         return index;
@@ -102,7 +109,14 @@ public class DefinitionCreator {
         match.baseSequence = baseSeq.toString();
         match.surfaceSequence = surfaceSeq.toString();
         match.startIndex = index;
-        match.endIndex = index + window - 1 ;
+        match.endIndex = index + window - 1;
+
+        if(window <= 1) {
+            Token token = tokens.get(index);
+            if (token.isParticle() || token.isTeForm() || token.isAuxiliary()) {
+                match.isWorthy = false;
+            }
+        }
         return match;
     }
 

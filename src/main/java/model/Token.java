@@ -21,6 +21,10 @@ public class Token {
         return pos.startsWith("助動詞") || pos.equals("動詞-非自立");
     }
 
+    public boolean isParticle() {
+        return pos.startsWith("助詞");
+    }
+
     public  boolean isTeForm() {
         return pos.equals("助詞-接続助詞");
     }

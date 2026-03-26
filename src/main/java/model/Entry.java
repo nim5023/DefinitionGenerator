@@ -10,4 +10,14 @@ public class Entry {
     public List<String> readings = new ArrayList<>();
     public Set<String> pri = new HashSet<>();
     public List<Sense> senses = new ArrayList<>();
+
+    @Override
+    public String toString() {
+        return "Entry{" +
+                "kanji=" + kanji +
+                ", readings=" + readings +
+                ", pri=" + pri +
+                ", senses=" + senses +
+                '}';
+    }
 }

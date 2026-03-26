@@ -6,6 +6,7 @@ public class Match {
     public String baseSequence;
     public int startIndex;  // token index
     public int endIndex;    // token index after chain
+    public boolean isWorthy = true;    // token index after chain
 
     public Match(){}
     public Match(String surfaceSequence, String baseSequence, int startIndex, int endIndex) {

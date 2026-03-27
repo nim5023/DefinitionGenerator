@@ -14,9 +14,6 @@ import java.util.List;
 
 public class BaseForm {
 
-
-    public static JapaneseTokenizer tokenizer = new JapaneseTokenizer(null, false, JapaneseTokenizer.Mode.NORMAL);
-
     public static void main(String[] args) throws IOException {
         JapaneseTokenizer tokenizer = new JapaneseTokenizer(null, false, JapaneseTokenizer.Mode.NORMAL);
 
@@ -50,22 +47,30 @@ public class BaseForm {
         System.out.println(stb.toString());
     }
 
-    public static List<Token> findTokens(String utterance) throws IOException {
-        tokenizer.setReader(new StringReader(utterance));
-        tokenizer.reset();
+    public static List<Token> findTokens(String utterance) {
+
         List<Token> tokens = new ArrayList<>();
 
-        while (tokenizer.incrementToken()) {
-            Token token = new Token();
-            BaseFormAttribute base = tokenizer.getAttribute(BaseFormAttribute.class);
-            token.base = base.getBaseForm();
+        try (JapaneseTokenizer tokenizer =
+                     new JapaneseTokenizer(null, false, JapaneseTokenizer.Mode.NORMAL)) {
 
-            PartOfSpeechAttribute posAttr = tokenizer.getAttribute(PartOfSpeechAttribute.class);
-            token.pos = posAttr.getPartOfSpeech();
+            tokenizer.setReader(new StringReader(utterance));
+            tokenizer.reset();
 
-            CharTermAttribute surfaceAttr = tokenizer.getAttribute(CharTermAttribute.class);
-            token.surface = surfaceAttr.toString();
-            tokens.add(token);
+            while (tokenizer.incrementToken()) {
+                Token token = new Token();
+                BaseFormAttribute base = tokenizer.getAttribute(BaseFormAttribute.class);
+                token.base = base.getBaseForm();
+
+                PartOfSpeechAttribute posAttr = tokenizer.getAttribute(PartOfSpeechAttribute.class);
+                token.pos = posAttr.getPartOfSpeech();
+
+                CharTermAttribute surfaceAttr = tokenizer.getAttribute(CharTermAttribute.class);
+                token.surface = surfaceAttr.toString();
+                tokens.add(token);
+            }
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
         }
         return tokens;
 

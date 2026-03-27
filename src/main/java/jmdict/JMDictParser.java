@@ -11,10 +11,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.File;
 
 
-
-
-
-
 public class JMDictParser {
 
     public static String JMDICT_FILE = "D:\\jmdict\\JMdict_e\\JMdict_e";
@@ -132,6 +128,7 @@ public class JMDictParser {
 //                    for (String r : current.readings) {
 //                        index.computeIfAbsent(r, x -> new ArrayList<>()).add(current);
 //                    }
+                    calcFrequency(current);
                     index.add(current);
                 }
             }
@@ -141,4 +138,12 @@ public class JMDictParser {
         System.out.println(longwords);
         return index;
     }
+
+    static void calcFrequency(Entry entry) {
+        for(String pri : entry.pri) {
+//            entry.frequency
+
+        }
+    }
+
 }

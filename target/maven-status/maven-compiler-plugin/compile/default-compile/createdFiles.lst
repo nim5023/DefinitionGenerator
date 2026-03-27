@@ -1,0 +1,6 @@
+definition\JapaneseDefinitionExtractor.class
+definition\DefinitionCreator$1.class
+DefinitionPopulator.class
+model\Definition.class
+definition\DefinitionCreator.class
+io\FileUtils.class

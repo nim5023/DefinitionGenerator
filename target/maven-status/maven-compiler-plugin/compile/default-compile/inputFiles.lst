@@ -1,0 +1,12 @@
+D:\Programs\JapaneseJava\src\main\java\definition\DefinitionCreator.java
+D:\Programs\JapaneseJava\src\main\java\definition\JapaneseDefinitionExtractor.java
+D:\Programs\JapaneseJava\src\main\java\jmdict\JMDictParser.java
+D:\Programs\JapaneseJava\src\main\java\kuromoji\BaseForm.java
+D:\Programs\JapaneseJava\src\main\java\DefinitionPopulator.java
+D:\Programs\JapaneseJava\src\main\java\model\Definition.java
+D:\Programs\JapaneseJava\src\main\java\model\Token.java
+D:\Programs\JapaneseJava\src\main\java\io\FileUtils.java
+D:\Programs\JapaneseJava\src\main\java\model\Entry.java
+D:\Programs\JapaneseJava\src\main\java\model\Match.java
+D:\Programs\JapaneseJava\src\main\java\model\Sense.java
+D:\Programs\JapaneseJava\src\main\java\frequency\FrequencyCreator.java

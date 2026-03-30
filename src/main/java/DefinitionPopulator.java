@@ -20,9 +20,16 @@ public class DefinitionPopulator {
         cards = cleanMeaning(cards);
         cards = addMeaningToCards(cards);
 
-        WordExtractor.badTokens.stream()
-                .filter(w-> kanjiPattern.matcher(w).matches())
-                .forEach(System.out::println);
+        for(String badToken : WordExtractor.badTokens.keySet()) {
+            if (kanjiPattern.matcher(badToken).matches()) {
+                List<String> badCards = WordExtractor.badTokens.get(badToken);
+                System.out.println();
+                System.out.println("-------" + badToken + "-------");
+                for (String badCard : badCards) {
+                    System.out.println(badCard);
+                }
+            }
+        }
 
         FileUtils.createFileFromList(FILE_OUT, cards);
     }
@@ -51,6 +58,7 @@ public class DefinitionPopulator {
                 String expression = tagSplits[3];
                 List<Definition> definitions = DefinitionExtractor.findDefinitions(expression);
 
+                int i = 0;
                 for (Definition definition : definitions) {
                     StringBuilder strb = new StringBuilder();
                     strb.append(definition.word);
@@ -58,12 +66,16 @@ public class DefinitionPopulator {
                         strb.append(" (").append(reading).append(")");
                     }
                     strb.append("<br>");
+
+                    List<String> joinedDefs = new ArrayList<>();
                     for (List<String> defs : definition.definitions) {
-                        strb.append("- ");
-                        strb.append(String.join("; ", defs));
-                        strb.append("<br>");
+                        joinedDefs.add("- " + String.join("; ", defs));
                     }
-                    strb.append("<br>");
+                    strb.append(String.join("<br>", joinedDefs));
+
+                    if (i++ < definitions.size() - 1) {
+                        strb.append("<br><br>");
+                    }
 
                     tagSplits[2] += strb.toString();
                 }

@@ -22,12 +22,12 @@ public class WordExtractor {
 
     public static List<String> findWords(String text) {
         List<Token> tokens = BaseForm.findTokens(text);
-        return findMatches(tokens, dictionary.keySet());
+        return findMatches(tokens, dictionary.keySet(), text);
     }
 
-    public static Set<String> badTokens = new HashSet<>();
+    public static Map<String, List<String>> badTokens = new HashMap<>();
 
-    static List<String> findMatches(List<Token> tokens, Set<String> dictionary) {
+    static List<String> findMatches(List<Token> tokens, Set<String> dictionary, String text) {
         List<String> definitions = new ArrayList<>();
         int index = 0;
 
@@ -48,7 +48,7 @@ public class WordExtractor {
 
             if (window == 0) {
                 System.out.println("Bad Token: " + tokens.get(index).surface);
-                badTokens.add(tokens.get(index).surface);
+                badTokens.computeIfAbsent(tokens.get(index).surface, k -> new ArrayList<>()).add(text);
                 index++;
             }
         }

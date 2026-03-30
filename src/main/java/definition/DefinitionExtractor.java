@@ -11,11 +11,12 @@ public class DefinitionExtractor {
 
     private static final Map<String, List<Entry>> dictionary = DictionaryCreator.createDictionary();
     private static final Map<String, Map<String, Double>> frequencies = FrequencyCreator.createFrequency();
-    private static final double FREQUENCY_THRESHOLD = 50.0;
+    private static final double FREQUENCY_THRESHOLD = 55.0;
 
     public static void main(String[] args) {
 
-        List<Definition> definitions = findDefinitions("昨日は雨が降っていたので、私は傘を持って学校に行きましたが、友達は忘れてしまいました。");
+//        List<Definition> definitions = findDefinitions("昨日は雨が降っていたので、私は傘を持って学校に行きましたが、友達は忘れてしまいました。");
+        List<Definition> definitions = findDefinitions("蛮闘の間");
         System.out.println(definitions);
     }
 

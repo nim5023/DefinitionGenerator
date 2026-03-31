@@ -15,12 +15,14 @@ public class DefinitionPopulator {
     private static final String kanjiRegex = ".*[\\u4E00-\\u9FFF].*";
     private static final Pattern kanjiPattern = Pattern.compile(kanjiRegex);
 
+    private static final int UTTERANCE = 3;
+
     public static void main(String[] args) {
         List<String> cards = FileUtils.readFromFile(FILE_IN);
         cards = cleanMeaning(cards);
         cards = addMeaningToCards(cards);
 
-        for(String badToken : WordExtractor.badTokens.keySet()) {
+        for (String badToken : WordExtractor.badTokens.keySet()) {
             if (kanjiPattern.matcher(badToken).matches()) {
                 List<String> badCards = WordExtractor.badTokens.get(badToken);
                 System.out.println();
@@ -38,7 +40,7 @@ public class DefinitionPopulator {
 
         List<String> returnCards = new ArrayList<>();
         for (String card : cards) {
-            String[] tagSplits = card.split("\t");
+            String[] tagSplits = card.split("\t",-1);
             if (tagSplits.length > 2) {
                 tagSplits[2] = "";
                 returnCards.add(String.join("\t", tagSplits));
@@ -51,11 +53,11 @@ public class DefinitionPopulator {
     private static List<String> addMeaningToCards(List<String> cards) {
         List<String> returnCards = new ArrayList<>();
         for (String card : cards) {
-            String[] tagSplits = card.split("\t");
+            String[] tagSplits = card.split("\t",-1);
 
             if (tagSplits.length > 2) {
 
-                String expression = tagSplits[3];
+                String expression = tagSplits[UTTERANCE];
                 List<Definition> definitions = DefinitionExtractor.findDefinitions(expression);
 
                 int i = 0;

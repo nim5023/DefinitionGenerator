@@ -1,8 +1,16 @@
 package io;
 
+import com.sun.tools.javac.Main;
+
 import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
+
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.nio.charset.StandardCharsets;
+import java.util.List;
+import java.util.stream.Collectors;
 
 public class FileUtils {
 
@@ -17,6 +25,16 @@ public class FileUtils {
             e.printStackTrace();
         }
         return result;
+    }
+
+    public static List<String> readFromResourcesFile(String filename) throws Exception {
+        try (BufferedReader reader = new BufferedReader(
+                new InputStreamReader(
+                        Main.class.getClassLoader().getResourceAsStream(filename),
+                        StandardCharsets.UTF_8))) {
+
+            return reader.lines().collect(Collectors.toList());
+        }
     }
 
     public static void createFileFromList(String filePath, List<String> lines) {

@@ -1,8 +1,6 @@
 package definition;
 
-import frequency.FrequencyCreator;
 import kuromoji.BaseForm;
-import model.Definition;
 import model.Entry;
 import model.Match;
 import model.Token;
@@ -13,6 +11,8 @@ import java.util.*;
 public class WordExtractor {
 
     private static Map<String, List<Entry>> dictionary = DictionaryCreator.createDictionary();
+    private static final Map<String, List<Entry>> badTokenDictionary = BadTokenDictionaryCreator.createDictionary();
+
 
     public static void main(String[] args) throws IOException {
 
@@ -47,13 +47,17 @@ public class WordExtractor {
             }
 
             if (window == 0) {
-                System.out.println("Bad Token: " + tokens.get(index).surface);
-                badTokens.computeIfAbsent(tokens.get(index).surface, k -> new ArrayList<>()).add(text);
+                String word = tokens.get(index).surface;
+                if(badTokenDictionary.get(word) == null) {
+                    System.out.println("Bad Token: " + word);
+                    badTokens.computeIfAbsent(word, k -> new ArrayList<>()).add(text);
+                } else {
+                    definitions.add(word);
+                }
                 index++;
             }
         }
 
-        System.out.println();
         return definitions;
     }
 

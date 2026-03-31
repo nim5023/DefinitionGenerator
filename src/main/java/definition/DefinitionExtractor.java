@@ -10,6 +10,7 @@ import java.util.*;
 public class DefinitionExtractor {
 
     private static final Map<String, List<Entry>> dictionary = DictionaryCreator.createDictionary();
+    private static final Map<String, List<Entry>> badTokenDictionary = BadTokenDictionaryCreator.createDictionary();
     private static final Map<String, Map<String, Double>> frequencies = FrequencyCreator.createFrequency();
     private static final double FREQUENCY_THRESHOLD = 55.0;
 
@@ -27,6 +28,12 @@ public class DefinitionExtractor {
         for (String word : words) {
             if (!isLowFrequency(word)) {
                 List<Entry> entries = dictionary.get(word);
+
+                if (entries == null) {
+                    entries = badTokenDictionary.get(word);
+                    if (entries == null) entries = new ArrayList<>();
+                }
+
                 if (entries.size() > 0) {
                     Definition definition = createDefinition(entries.get(0), word);
                     definitions.add(definition);
@@ -58,14 +65,14 @@ public class DefinitionExtractor {
         for (String reading : entry.readings)
             if (word.equalsIgnoreCase(reading)) {
                 definition.readings = findReadings(reading);
-                if(definition.readings.isEmpty() && !entry.kanji.isEmpty())
+                if (definition.readings.isEmpty() && !entry.kanji.isEmpty())
                     definition.readings.add(entry.kanji.get(0));
             }
 
         for (String kanji : entry.kanji)
             if (word.equalsIgnoreCase(kanji)) {
                 definition.readings = findReadings(kanji);
-                if(definition.readings.isEmpty() && !entry.readings.isEmpty())
+                if (definition.readings.isEmpty() && !entry.readings.isEmpty())
                     definition.readings.add(entry.readings.get(0));
             }
 

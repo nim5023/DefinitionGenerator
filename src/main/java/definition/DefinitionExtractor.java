@@ -12,7 +12,7 @@ public class DefinitionExtractor {
     private static final Map<String, List<Entry>> dictionary = DictionaryCreator.createDictionary();
     private static final Map<String, List<Entry>> badTokenDictionary = BadTokenDictionaryCreator.createDictionary();
     private static final Map<String, Map<String, Double>> frequencies = FrequencyCreator.createFrequency();
-    private static final double FREQUENCY_THRESHOLD = 55.0;
+    private static final double FREQUENCY_THRESHOLD = 60.0;
 
     public static void main(String[] args) {
 
@@ -50,6 +50,15 @@ public class DefinitionExtractor {
         if (freq == null) return false;
 
         double min = Collections.min(freq.values());
+
+        if(min > FREQUENCY_THRESHOLD && min < FREQUENCY_THRESHOLD + 5.0) {
+            System.out.println("************** LOW FREQ: " + word);
+        }
+
+        if("の".equals(word)) {
+            min = 0.0;
+        }
+
         return min < FREQUENCY_THRESHOLD;
     }
 
